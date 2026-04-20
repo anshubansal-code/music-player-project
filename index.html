@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emotion Music Player</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-icon">🎵</div>
+      <div>
+        <h1>Emotion Music Player 🎵</h1>
+        <p>Detects your mood · Finds songs · Plays in-app</p>
+      </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="card">
+      <div class="step-label"><span class="badge">1</span> Detect your emotion</div>
+      <div class="cam-grid">
+
+        <div class="cam-box" id="cam-box">
+          <video id="video" autoplay playsinline muted></video>
+          <canvas id="frame-canvas" hidden></canvas>
+          <div class="scan-line" id="scan-line"></div>
+          <div class="cam-glow" id="cam-glow"></div>
+          <div class="cam-error hidden" id="cam-error">
+            <span>📷</span>
+            <p>Camera blocked.<br>Allow access & refresh.</p>
+          </div>
+        </div>
+
+        <div class="emotion-card" id="emotion-card">
+          <div id="emo-empty" class="emo-empty">
+            <div class="emo-empty-icon">🎭</div>
+            <p><b>Step 1</b> Detect your emotion</p>
+            <p><b>Step 2</b> Type a singer name</p>
+            <p><b>Step 3</b> Music plays here</p>
+          </div>
+          <div id="emo-result" class="hidden">
+            <div class="emo-name" id="emo-name"></div>
+            <div class="emo-tag">detected emotion</div>
+            <div class="conf-row">
+              <span>Confidence</span>
+              <span id="conf-pct"></span>
+            </div>
+            <div class="conf-bar"><div id="conf-fill"></div></div>
+            <p class="emo-msg" id="emo-msg"></p>
+          </div>
+        </div>
+
+      </div>
+      <button class="btn-detect" id="detect-btn" onclick="detectEmotion()">
+        🎯 Detect My Emotion
+      </button>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="card hidden" id="step2">
+      <div class="step-label"><span class="badge">2</span> Choose a singer or artist</div>
+      <div class="artist-row">
+        <input type="text" id="artist-input"
+          placeholder="Try: Arijit Singh 😄 | Yo Yo Honey Singh 😎 | BTS 🔥 | Adele 😢 | Taylor Swift 😍"
+          onkeydown="if(event.key==='Enter') findSongs()" />
+        <button class="btn-find" id="find-btn" onclick="findSongs()">Find Songs →</button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="card hidden" id="step3">
+      <div class="step-label"><span class="badge">3</span> Pick a song — plays instantly</div>
+      <div id="song-list"></div>
+    </div>
+
+    <!-- Player -->
+    <div class="card hidden" id="step4">
+      <div class="step-label"><span class="badge green-badge">▶</span> Now Playing</div>
+      <div class="player" id="player">
+        <div class="player-top">
+          <div class="disc" id="disc">🎵</div>
+          <div class="track-info">
+            <div class="track-title" id="track-title">—</div>
+            <div class="track-sub"   id="track-sub"></div>
+            <div class="track-mode"  id="track-mode"></div>
+          </div>
+          <div class="controls">
+            <button class="ctrl" onclick="prevTrack()">◀</button>
+            <button class="ctrl play-ctrl" id="play-btn" onclick="togglePlay()">▶</button>
+            <button class="ctrl" onclick="nextTrack()">▶▶</button>
+          </div>
+        </div>
+        <div class="progress-row hidden" id="progress-row">
+          <span class="ptime" id="t-cur">0:00</span>
+          <div class="prog-track" id="prog-track" onclick="seekAudio(event)">
+            <div class="prog-fill" id="prog-fill"></div>
+          </div>
+          <span class="ptime" id="t-dur">0:30</span>
+        </div>
+        <div id="yt-wrap" class="hidden"></div>
+        <div id="wave-wrap" class="hidden">
+          <canvas id="wave-canvas"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div id="app-err" class="app-err hidden"></div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+  <script src="config.js"></script>
+  <script src="emotion.js"></script>
+  <script src="music.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
